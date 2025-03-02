@@ -54,7 +54,7 @@ def get_filters():
         day = days[d]
     else:
         day = ('all')
-        
+    
     print('-'*40)
     return city, month, day
 

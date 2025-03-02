@@ -21,11 +21,11 @@ city_map = {
 city = st.sidebar.selectbox("🏙️ Choose a city:", list(city_map.keys()))
 
 # Filter options
-filter_type = st.sidebar.radio("🛠️ Choose filter type:", ["No Filter", "Month", "Day", "Month & Day"])
+filter_type = st.sidebar.radio("🛠️ Choose filter type:", ["No Filter", "Day", "Month", "Day & Month"])
 
 # Month selection
 month = "all"
-if filter_type in ["Month", "Month & Day"]:
+if filter_type in ["Month", "Day & Month"]:
     month_map = {
         "January": "january", "February": "february", "March": "march",
         "April": "april", "May": "may", "June": "june"
@@ -34,7 +34,7 @@ if filter_type in ["Month", "Month & Day"]:
 
 # Day selection
 day = "all"
-if filter_type in ["Day", "Month & Day"]:
+if filter_type in ["Month", "Day & Month"]:
     day_map = {
         "Sunday": "Sunday", "Monday": "Monday", "Tuesday": "Tuesday",
         "Wednesday": "Wednesday", "Thursday": "Thursday", "Friday": "Friday", "Saturday": "Saturday"
