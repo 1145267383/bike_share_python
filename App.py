@@ -6,38 +6,53 @@ import bikeshare  # Importing the existing bikeshare script
 st.set_page_config(page_title="BikeShare Data Explorer", layout="wide")
 
 # Title
-st.title("🚲 US BikeShare Data Explorer")
+st.title("🚲 Hello! Let\'s Explore Some US Bikeshare Data!")
 st.markdown("Analyze bike share data from **Chicago, New York City, and Washington**.")
 
 # Sidebar for filters
 st.sidebar.header("🔍 Select Filters")
 
+CITY_DATA = { 'Chicago': 'chicago.csv',
+              'New York City': 'new_york_city.csv',
+              'Washington': 'washington.csv' }
+months = [ "All",'January', 'February', 'March', 'April', 'May', 'June']
+days= [ "All", 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+filters= ["No Filter", "Day", "Month", "Day & Month"]
+
 def get_filters():
-    city = st.sidebar.selectbox("🏙️ Choose a city:", list(city_map.keys()))
+    """
+    Asks user to specify a city, month, and day to analyze.
+
+    Returns:
+        (c) city - name of the city to analyze
+        (m) month - name of the month to filter by, or "all" to apply no month filter
+        (d) day - name of the day of week to filter by, or "all" to apply no day filter
+    """
+    # get user input for city (chicago, new york city, washington).
+    city = st.sidebar.selectbox("🏙️ Choose a city:", list(CITY_DATA.keys())).lower()
 
     # Filter options
-    filter_type = st.sidebar.radio("🛠️ Choose filter type:", ["No Filter", "Day", "Month", "Day & Month"])
+    filter_type = st.sidebar.radio("🛠️ Choose filter type:", filters)
+
 
     # Month selection
-    month = "all"
     if filter_type in ["Month", "Day & Month"]:
-        month_map = {
-            "January": "january", "February": "february", "March": "march",
-            "April": "april", "May": "may", "June": "june"
-        }
-        month = st.sidebar.selectbox("📅 Choose a month:", list(month_map.keys()))
+
+        month = st.sidebar.selectbox("📅 Choose a month:", months).lower()
+    else:
+        month = "all"
 
     # Day selection
-    day = "all"
-    if filter_type in ["Month", "Day & Month"]:
-        day_map = {
-            "Sunday": "Sunday", "Monday": "Monday", "Tuesday": "Tuesday",
-            "Wednesday": "Wednesday", "Thursday": "Thursday", "Friday": "Friday", "Saturday": "Saturday"
-        }
-        day = st.sidebar.selectbox("📆 Choose a day:", list(day_map.keys()))
+    if filter_type in ["Day", "Day & Month"]:
+
+        day = st.sidebar.selectbox("📆 Choose a day:", days).lower()
+    else:
+        day = "all"
 
 
     return city, month, day
+
 
 # Load data
 city, month, day = get_filters()
@@ -60,14 +75,11 @@ bikeshare.trip_duration_stats(df)
 st.subheader("👥 User Statistics")
 bikeshare.user_stats(df)
 
-restart = st.sidebar.selectbox("Would you like to restart?", ['yes' ,'no'])
-if restart == 'yes':
-    bikeshare.main()
 
 # Display raw data option
-if st.checkbox("👀 Show Raw Data"):
-    st.write(df.head(10))
+if st.checkbox("👀 Show Summary of data"):
+    st.write(df.describe())
 
 # Restart button
 if st.button("🔄 Restart Analysis"):
-    st.experimental_rerun()
+    st.rerun()

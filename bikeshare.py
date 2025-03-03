@@ -1,6 +1,7 @@
 import time
 import pandas as pd
 import numpy as np
+import streamlit as st
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
@@ -92,40 +93,40 @@ def load_data(city, month, day):
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
 
-    print('\nCalculating The Most Frequent Times of Travel...\n')
+    st.write('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
     # display the most common month
     months = ['January', 'February', 'March', 'April', 'May', 'June']
     popular_month = df['month'].mode()[0]
-    print('Most Frequent month: ', months[popular_month-1])
+    st.write('Most Frequent month: ', months[popular_month-1])
     
     # display the most common day of week
     popular_day = df['day_of_week'].mode()[0]
-    print('Most Frequent day of weeek:', popular_day)
+    st.write('Most Frequent day of weeek:', popular_day)
     
     # display the most common start hour
     df['hour'] = df['Start Time'].dt.hour
     popular_hour = df['hour'].mode()[0]
-    print('Most Frequent Start Hour: ', popular_hour)
+    st.write('Most Frequent Start Hour: ', popular_hour)
     
-    print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    st.write("\nThis took %s seconds." % (time.time() - start_time))
+    st.write('-'*40)
 
 
 def station_stats(df):
     """Displays statistics on the most popular stations and trip."""
 
-    print('\nCalculating The Most Popular Stations and Trip...\n')
+    st.write('\nCalculating The Most Popular Stations and Trip...\n')
     start_time = time.time()
 
     # display most commonly used start station
     start_station = df['Start Station'].mode()[0]
-    print('Most Frequent start station: ', start_station)
+    st.write('Most Frequent start station: ', start_station)
     
     # display most commonly used end station
     end_station = df['End Station'].mode()[0]
-    print('Most Frequent end station: ', end_station)
+    st.write('Most Frequent end station: ', end_station)
     
     # display most frequent combination of start station and end station trip
     if end_station < start_station:
@@ -133,55 +134,56 @@ def station_stats(df):
     else:
         start_end_station = end_station
 
-    print('Most Frequentcombination of start station and end station trip: ', start_end_station)
+    st.write('Most Frequentcombination of start station and end station trip: ', start_end_station)
 
-    print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    st.write("\nThis took %s seconds." % (time.time() - start_time))
+    st.write('-'*40)
 
 
 def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration."""
 
-    print('\nCalculating Trip Duration...\n')
+    st.write('\nCalculating Trip Duration...\n')
     start_time = time.time()
 
     # display total travel time
     total_travel_time = df['Trip Duration'].sum()
-    print('Total travel time is: ', total_travel_time)
+    st.write('Total travel time is: ', total_travel_time)
     # display mean travel time
     mean_travel_time = df['Trip Duration'].mean()
-    print('Mean travel time is: ', mean_travel_time)
+    st.write('Mean travel time is: ', mean_travel_time)
 
-    print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    st.write("\nThis took %s seconds." % (time.time() - start_time))
+    st.write('-'*40)
 
 
 def user_stats(df):
     """Displays statistics on bikeshare users."""
 
-    print('\nCalculating User Stats...\n')
+    st.write('\nCalculating User Stats...\n')
     start_time = time.time()
 
     # Display counts of user types
     counts_user_types = df['User Type'].value_counts()
-    print('The numbers of users types is: ', counts_user_types)
+    st.write('The numbers of users types is: ', counts_user_types)
     
     # Display counts of gender
     if 'Gender' in(df.columns): 
         counts_gender = df['Gender'].value_counts()
-        print('The numbers of users gender is: ', counts_gender)
+        st.write('The numbers of users gender is: ', counts_gender)
     # Display earliest, most recent, and most common year of birth
     if 'Gender' in(df.columns):
         earliest = df['Birth Year'].min()
-        print('Earliest year of birth is: ',earliest)
+        st.write('Earliest year of birth is: ',earliest)
         most_recent = df['Birth Year'].max()
-        print('Most recent year of birth is: ',most_recent)
+        st.write('Most recent year of birth is: ',most_recent)
         most_common = df['Birth Year'].mode()[0]
-        print('Most common year of birth is: ',most_common)   
+        st.write('Most common year of birth is: ',most_common)   
 
     
-    print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
+    st.write("\nThis took %s seconds." % (time.time() - start_time))
+    st.write('-'*40)
+    # save the output to a file
 
 def display(df):
     """Displays 5 rows of individual trip data."""
@@ -193,8 +195,6 @@ def display(df):
         print(df.iloc[(start_loc): (start_loc+5)])
         start_loc += 5
         view_data = input("\nDo you wish to continue? Enter 'yes' or 'no' ?\n").lower()
-        
-        
 
 
 
